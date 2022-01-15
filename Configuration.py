@@ -1,5 +1,4 @@
 
-from distutils.command.config import config
 import json
 import os
 import os.path
