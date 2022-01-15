@@ -31,4 +31,5 @@ class Configuration:
         self.twilio_messagingservice_sid = config_obj["twilio"]["messagingservice_sid"]
         self.twilio_account_sid = config_obj["twilio"]["account_sid"]
         self.twilio_auth_token = config_obj["twilio"]["auth_token"]
+        self.twilio_disabled = config_obj["twilio"]["disabled"]
         self.logging_verbosity = config_obj["logging_verbosity"]

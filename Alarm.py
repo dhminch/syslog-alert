@@ -64,12 +64,14 @@ class AlarmDispatcher:
 
             Debug.log("Alarm passed rate limit checks, actually sending")
             alarm.time_sent = current_time
-            """message = client.messages.create(  
-                                    messaging_service_sid=twilio_messagingservice_sid, 
-                                    body=msg,      
-                                    to=phone
-                                )
-            print(message.sid)"""
+            if not self.config.twilio_disabled:
+                message = self.client.messages.create(  
+                                        messaging_service_sid=self.config.twilio_messagingservice_sid, 
+                                        body=alarm.message,      
+                                        to=self.config.cellphone
+                                    )
+                if message.error_code is not None:
+                    Debug.error("Unable to send alarm via Twilio: {}".format(message.error_message))
             self.alarm_sent.append(alarm)
         
         self.alarm_queue.clear()
