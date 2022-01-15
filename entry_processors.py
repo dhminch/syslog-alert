@@ -3,7 +3,7 @@ import pprint
 import re
 
 from Alarm import Alarm
-import debug
+from Debug import Debug
 
 RE_ENTRY_FIELDS = re.compile(r"(.{15}) ([^:]+) ([^\s:]+?)(?:\[(\d+)\])?: (.*)")
 RE_SUDO_MESSAGE_FIELDS = re.compile(r"(\S+) : TTY=(.*) ; PWD=(.*); USER=(.*) ; COMMAND=(.*)")
@@ -47,7 +47,7 @@ def ignore_entry(entry):
 def entry_processor_sudo(entry):
     fields = get_entry_fields(entry)
     if fields is None:
-        debug.log("Unable to parse fields from entry: {}".format(entry))
+        Debug.log("Unable to parse fields from entry: {}".format(entry))
         return None
 
     if fields["process"] != "sudo":
@@ -70,7 +70,7 @@ def entry_processor_sudo(entry):
 def entry_processor_pkexec(entry):
     fields = get_entry_fields(entry)
     if fields is None:
-        debug.log("Unable to parse fields from entry: {}".format(entry))
+        Debug.log("Unable to parse fields from entry: {}".format(entry))
         return None
 
     if fields["process"] != "pkexec":
@@ -93,7 +93,7 @@ def entry_processor_pkexec(entry):
 def entry_processor_ssh_login(entry):
     fields = get_entry_fields(entry)
     if fields is None:
-        debug.log("Unable to parse fields from entry: {}".format(entry))
+        Debug.log("Unable to parse fields from entry: {}".format(entry))
         return None
 
     if fields["process"] != "sshd":
@@ -116,7 +116,7 @@ def entry_processor_ssh_login(entry):
 def entry_processor_pfsense_web_login(entry):
     fields = get_entry_fields(entry)
     if fields is None:
-        debug.log("Unable to parse fields from entry: {}".format(entry))
+        Debug.log("Unable to parse fields from entry: {}".format(entry))
         return None
 
     if fields["process"] != "php-fpm":
@@ -136,7 +136,7 @@ def entry_processor_pfsense_web_login(entry):
 def entry_processor_esxi_web_login(entry):
     fields = get_entry_fields(entry)
     if fields is None:
-        debug.log("Unable to parse fields from entry: {}".format(entry))
+        Debug.log("Unable to parse fields from entry: {}".format(entry))
         return None
 
     if fields["process"] != "Hostd":
@@ -157,7 +157,7 @@ def entry_processor_esxi_web_login(entry):
 def entry_processor_tty_login(entry):
     fields = get_entry_fields(entry)
     if fields is None:
-        debug.log("Unable to parse fields from entry: {}".format(entry))
+        Debug.log("Unable to parse fields from entry: {}".format(entry))
         return None
 
     match = RE_TTY_LOGIN.match(fields["message"])

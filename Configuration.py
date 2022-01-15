@@ -3,23 +3,23 @@ import json
 import os
 import os.path
 
-import debug
+from Debug import Debug
 
 class Configuration:
 
     def __init__(self, file):
         if not os.path.isfile(file):
-            debug.log("Configuration file {} does not exist!".format(file))
+            Debug.error("Configuration file {} does not exist!".format(file))
             exit(1)
         if not os.access(file, os.O_RDONLY):
-            debug.log("Configuration file {} is not readable!".format(file))
+            Debug.error("Configuration file {} is not readable!".format(file))
             exit(1)
 
         with open(file, "r", encoding="utf-8") as handle:
             try:
                 config_obj = json.load(handle)
             except Exception as e:
-                debug.log("Configuration file {} is not valid JSON!".format(file))
+                Debug.error("Configuration file {} is not valid JSON!".format(file))
                 raise e
             
         self.logs = config_obj["logs"]
@@ -31,3 +31,4 @@ class Configuration:
         self.twilio_messagingservice_sid = config_obj["twilio"]["messagingservice_sid"]
         self.twilio_account_sid = config_obj["twilio"]["account_sid"]
         self.twilio_auth_token = config_obj["twilio"]["auth_token"]
+        self.logging_verbosity = config_obj["logging_verbosity"]

@@ -39,6 +39,7 @@ Edit config.json to suit your needs. The configurable fields are:
 | `twilio` - `account_sid` | Your Twilio Account SID (on your Twilio Dashboard) |
 | `twilio` - `auth_token` | Your Twilio Auth Token (on your Twilio Dashboard)  |
 | `twilio` - `messagingservice_sid` | Your Twilio Messasing Service SID (under the Messaging Service you created). |
+| `logging_verbosity` | How much logging output should there be - 1 = Errors only, 2 = General information, 3 = Debugging information. |
 
 ### Start syslog-sms
 
