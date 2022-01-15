@@ -37,7 +37,7 @@ sudo systemctl enable syslog-sms
 ### Configure syslog-sms
 
 ```
-cp /opt/syslog-sms/config.json.template /opt/syslog-sms/config.json
+sudo cp /opt/syslog-sms/config.json.template /opt/syslog-sms/config.json
 ```
 
 Edit config.json to suit your needs. The configurable fields are:
