@@ -1,5 +1,5 @@
 {
-    "logs":["LOG_FILES],
+    "logs":["/var/log/secure", "/var/log/messages"],
     "cellphone": "+12223334444",
     "monitor_frequency": 60,
     "limits": {
