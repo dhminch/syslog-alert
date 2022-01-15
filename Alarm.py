@@ -62,9 +62,12 @@ class AlarmDispatcher:
                 Debug.log("Ignoring alarm due to daily limit reached")
                 continue
 
-            Debug.log("Alarm passed rate limit checks, actually sending")
+            
             alarm.time_sent = current_time
-            if not self.config.twilio_disabled:
+            if self.config.twilio_disabled:
+                Debug.log("Alarm would be sent, but Twilio is disabled in the configuration")
+            else:
+                Debug.log("Sending alarm via Twilio")
                 message = self.client.messages.create(  
                                         messaging_service_sid=self.config.twilio_messagingservice_sid, 
                                         body=alarm.message,      
