@@ -15,8 +15,8 @@ Monitor syslog and text when something interesting happens
 ```
 sudo apt install python3 python3-pip git
 sudo pip3 install twilio
-sudo git clone https://github.com/dhminch/syslog-sms.git /opt
-sudo cp /opt/syslog-sms/syslog-sms.service /etc/systemd/system/
+sudo mkdir /opt/syslog-sms
+sudo git clone https://github.com/dhminch/syslog-sms.git /opt/syslog-smssudo cp /opt/syslog-sms/syslog-sms.service /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable syslog-sms
 ```
@@ -26,7 +26,8 @@ sudo systemctl enable syslog-sms
 ```
 sudo yum install python3 python3-pip git
 sudo pip3 install twilio
-sudo git clone https://github.com/dhminch/syslog-sms.git /opt
+sudo mkdir /opt/syslog-sms
+sudo git clone https://github.com/dhminch/syslog-sms.git /opt/syslog-sms
 sudo cp /opt/syslog-sms/syslog-sms.service /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable syslog-sms
