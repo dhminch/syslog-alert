@@ -1,0 +1,10 @@
+{
+    "logs":["LOG_FILES],
+    "cellphone": "+12223334444",
+    "ratelimit": 10,
+    "twilio" : {
+        "account_sid": "TWILIO_ACCOUNT_SID",
+        "auth_token": "TWILIO_AUTH_TOKEN",
+        "messagingservice_sid": "TWILIO_MESSAGING_SERVICE_SID"
+    }
+}
