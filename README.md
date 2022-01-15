@@ -11,8 +11,20 @@ Monitor syslog and text when something interesting happens
 
 ### Install syslog-sms and Dependencies
 
+#### Debian/Ubuntu/apt Based Distributions
 ```
 sudo apt install python3 python3-pip git
+sudo pip3 install twilio
+sudo git clone https://github.com/dhminch/syslog-sms.git /opt
+sudo cp /opt/syslog-sms/syslog-sms.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable syslog-sms
+```
+
+#### RHEL/CentOS/yum Based Distributions:
+
+```
+sudo yum install python3 python3-pip git
 sudo pip3 install twilio
 sudo git clone https://github.com/dhminch/syslog-sms.git /opt
 sudo cp /opt/syslog-sms/syslog-sms.service /etc/systemd/system/
