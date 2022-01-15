@@ -35,7 +35,7 @@ class LogMonitor:
             debug.log("Sleeping for {} seconds".format(self.config.monitor_frequency))
             time.sleep(self.config.monitor_frequency)
             self.process_logs()
-            self.dispatcher.send_alarms(self.config)
+            self.dispatcher.send_alarms()
 
     def init_logs(self):
         debug.log("Initalizing logs")

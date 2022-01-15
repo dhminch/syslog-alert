@@ -63,7 +63,7 @@ def entry_processor_sudo(entry):
     fields["target_user"] = match.group(4)
     fields["command"] = match.group(5)
 
-    return Alarm("{}: User {} used sudo on {} to {} as {}".format(
+    return Alarm(fields["host"], "{}: User {} used sudo on {} to {} as {}".format(
                 fields["date"], fields["requesting_user"], fields["host"],
                 fields["command"], fields["target_user"]))
 
@@ -86,7 +86,7 @@ def entry_processor_pkexec(entry):
     fields["pwd"] = match.group(4)
     fields["command"] = match.group(5)
 
-    return Alarm("{}: User {} used pkexec on {} to {} as {}".format(
+    return Alarm(fields["host"], "{}: User {} used pkexec on {} to {} as {}".format(
                 fields["date"], fields["requesting_user"], fields["host"],
                 fields["command"], fields["target_user"]))
 
@@ -109,7 +109,7 @@ def entry_processor_ssh_login(entry):
     fields["source_port"] = match.group(4)
     fields["ssh_info"] = match.group(5)
 
-    return Alarm("{}: User {} logged into {} via SSH from {} using {}".format(
+    return Alarm(fields["host"], "{}: User {} logged into {} via SSH from {} using {}".format(
                 fields["date"], fields["user"], fields["host"],
                 fields["source_ip"], fields["auth_method"]))
 
@@ -129,7 +129,7 @@ def entry_processor_pfsense_web_login(entry):
     fields["user"] = match.group(1)
     fields["source_ip"] = match.group(2)
 
-    return Alarm("{}: User {} logged into {} web GUI from {}".format(
+    return Alarm(fields["host"], "{}: User {} logged into {} web GUI from {}".format(
                 fields["date"], fields["user"], fields["host"],
                 fields["source_ip"]))
 
@@ -150,7 +150,7 @@ def entry_processor_esxi_web_login(entry):
     fields["source_ip"] = match.group(2)
     fields["user_agent"] = match.group(3)
 
-    return Alarm("{}: User {} logged into {} ESXi web UI from {} via {}".format(
+    return Alarm(fields["host"], "{}: User {} logged into {} ESXi web UI from {} via {}".format(
                 fields["date"], fields["user"], fields["host"],
                 fields["source_ip"], fields["user_agent"]))
 
@@ -167,6 +167,6 @@ def entry_processor_tty_login(entry):
     fields["tty"] = match.group(1)
     fields["user"] = match.group(2)
 
-    return Alarm("{}: User {} logged into {} locally via {}".format(
+    return Alarm(fields["host"], "{}: User {} logged into {} locally via {}".format(
                 fields["date"], fields["user"], fields["host"],
                 fields["tty"]))
