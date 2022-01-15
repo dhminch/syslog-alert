@@ -1,8 +1,12 @@
 {
     "logs":["LOG_FILES],
     "cellphone": "+12223334444",
-    "ratelimit": 10,
-    "twilio" : {
+    "limits": {
+        "host_cooldown": 3600,
+        "max_per_hour": 10,
+        "max_per_day": 25
+    },
+    "twilio": {
         "account_sid": "TWILIO_ACCOUNT_SID",
         "auth_token": "TWILIO_AUTH_TOKEN",
         "messagingservice_sid": "TWILIO_MESSAGING_SERVICE_SID"
