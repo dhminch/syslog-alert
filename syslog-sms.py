@@ -1,6 +1,5 @@
 
-from twilio.rest import Client
-
+from Alarm import AlarmDispatcher
 from Configuration import Configuration
 import debug
 import entry_processors
@@ -42,24 +41,12 @@ def process_logs(logs):
 
     return alarms
 
-def process_alarms(alarms):
-    pass
-
-def send_alarm(twilio_account_sid, twilio_messagingservice_sid, twilio_auth_token, phone, msg):
-    client = Client(twilio_account_sid, twilio_auth_token) 
- 
-    message = client.messages.create(  
-                                messaging_service_sid=twilio_messagingservice_sid, 
-                                body=msg,      
-                                to=phone
-                            )
-    print(message.sid)
-
 def main():
     config = Configuration("config.json")
-    #send_alarm(config.twilio_account_sid, config.twilio_messagingservice_sid, config.twilio_auth_token, config.cellphone, "Test Message alpha")
     alarms = process_logs(config.logs)
-    process_alarms(alarms)
+    dispatcher = AlarmDispatcher()
+    dispatcher.load_alarms(alarms)
+    dispatcher.send_alarms()
 
 if __name__ == "__main__":
     main()
