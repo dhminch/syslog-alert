@@ -15,6 +15,8 @@ class AlarmDispatcher:
 
     def __init__(self):
         self.alarm_queue = []
+        self.alarm_sent = []
+        self.alarm_ignored = []
 
     def load_alarms(self, alarms):
         self.alarm_queue.extend(alarms)
@@ -22,7 +24,7 @@ class AlarmDispatcher:
     def send_alarms(self, config):
         client = Client(config.twilio_account_sid, config.twilio_auth_token)
 
-        for alarm in alarms:
+        for alarm in self.alarm_queue:
             debug.log(alarm)
             """message = client.messages.create(  
                                     messaging_service_sid=twilio_messagingservice_sid, 
@@ -30,4 +32,9 @@ class AlarmDispatcher:
                                     to=phone
                                 )
             print(message.sid)"""
+            self.alarm_sent.append(alarm)
+        
+        self.alarm_queue.clear()
+
+        
     
