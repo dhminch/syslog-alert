@@ -25,7 +25,7 @@ class AlarmDispatcher:
         client = Client(config.twilio_account_sid, config.twilio_auth_token)
 
         for alarm in self.alarm_queue:
-            debug.log(alarm)
+            debug.log("Dispatching alarm: {}".format(alarm))
             """message = client.messages.create(  
                                     messaging_service_sid=twilio_messagingservice_sid, 
                                     body=msg,      
