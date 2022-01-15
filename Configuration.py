@@ -24,6 +24,7 @@ class Configuration:
                 raise e
             
         self.logs = config_obj["logs"]
+        self.monitor_frequency = config_obj["monitor_frequency"]
         self.cellphone = config_obj["cellphone"]
         self.limits_host_cooldown = config_obj["limits"]["host_cooldown"]
         self.limits_max_per_hour = config_obj["limits"]["max_per_hour"]

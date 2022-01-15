@@ -1,6 +1,7 @@
 {
     "logs":["LOG_FILES],
     "cellphone": "+12223334444",
+    "monitor_frequency": 60,
     "limits": {
         "host_cooldown": 3600,
         "max_per_hour": 10,
