@@ -10,7 +10,7 @@ RE_SUDO_MESSAGE_FIELDS = re.compile(r"(\S+) : TTY=(.*) ; PWD=(.*); USER=(.*) ; C
 RE_PKEXEC_MESSAGE_FIELDS = re.compile(r"(\S+): Executing command \[USER=(.*)\] \[TTY=(.*)\] \[CWD=(.*)\] \[COMMAND=(.*)\]")
 RE_SSH_LOGIN_MESSAGE_FIELDS = re.compile(r"Accepted (\S+) for (\S+) from ([0-9.]+) port ([0-9]{1,5}) (.+)")
 RE_PFSENSE_WEB_LOGIN_MESSAGE_FIELDS = re.compile(r".* Successful login for user '(\S+)' from: ([0-9.]+)")
-RE_ESXI_WEB_LOGIN = re.compile(r".*Event 671 : User (\S+)@([0-9.]+) logged in as (.*)")
+RE_ESXI_WEB_LOGIN = re.compile(r".*User (\S+)@([0-9.]+) logged in as (.*)")
 RE_TTY_LOGIN = re.compile(r"LOGIN ON (\S+) BY (\S+)")
 
 RE_IGNORE_ENTRIES = [
