@@ -33,3 +33,4 @@ class Configuration:
         self.twilio_auth_token = config_obj["twilio"]["auth_token"]
         self.twilio_disabled = config_obj["twilio"]["disabled"]
         self.logging_verbosity = config_obj["logging_verbosity"]
+        self.logging_file = config_obj["logging_file"]

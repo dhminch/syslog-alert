@@ -15,7 +15,7 @@ def main():
     signal(SIGINT, sigint_handler)
     __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     config = Configuration(os.path.join(__location__, "config.json"))
-    Debug.set_verbosity(config.logging_verbosity)
+    Debug.set_verbosity(config.logging_verbosity, config.logging_file)
     dispatcher = AlarmDispatcher(config)
     logmonitor = LogMonitor(config, dispatcher)
     logmonitor.monitor()
