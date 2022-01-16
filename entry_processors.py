@@ -38,7 +38,7 @@ def get_entry_fields(entry):
 
 def ignore_entry(entry):
     for pattern in RE_IGNORE_ENTRIES:
-        if isinstance(pattern, re.Pattern) and pattern.search(entry):
+        if "search" in dir(pattern) and pattern.search(entry):
             return True
         elif isinstance(pattern, str) and pattern in entry:
             return True
