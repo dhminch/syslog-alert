@@ -11,16 +11,13 @@ class Debug:
         if Debug.verbosity >= 1:
             log_msg = "[E] {}: {}".format(datetime.now(), msg)
             print(log_msg)
-            Debug.output_file.write("{}\n".format(log_msg))
 
     def log(msg):
         if Debug.verbosity >= 2:
             log_msg = "[L] {}: {}".format(datetime.now(), msg)
             print(log_msg)
-            Debug.output_file.write("{}\n".format(log_msg))
 
     def debug(msg):
         if Debug.verbosity >= 3:
             log_msg = "[D] {}: {}".format(datetime.now(), msg)
             print(log_msg)
-            Debug.output_file.write("{}\n".format(log_msg))
