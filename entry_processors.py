@@ -13,7 +13,7 @@ RE_PFSENSE_WEB_LOGIN_MESSAGE_FIELDS = re.compile(r".* Successful login for user 
 RE_ESXI_WEB_LOGIN = re.compile(r".*User (\S+)@([0-9.]+) logged in as (.*)")
 RE_TTY_LOGIN = re.compile(r"LOGIN ON (\S+) BY (\S+)")
 RE_OPENVPN_LOGIN = re.compile(r"user '(\S+)' authenticated")
-RE_OMV_WEB_LOGIN = re.compile(r"Authorized login from ([a-f0-9:.]+) \[username=(\S+), user-agent=([^\]]+)]")
+RE_OMV_WEB_LOGIN = re.compile(r"Authorized login from ([a-fA-F0-9:.]+) \[username=(\S+), user-agent=([^\]]+)]")
 
 RE_IGNORE_ENTRIES = [
     re.compile(r"org.gnome.Terminal.desktop.*(watch_established|watch_fast|unwatch_fast)"),
