@@ -13,6 +13,5 @@
         "messagingservice_sid": "TWILIO_MESSAGING_SERVICE_SID",
         "disabled": 0
     },
-    "logging_verbosity": 2,
-    "logging_file": "/var/log/syslog-sms"
+    "logging_verbosity": 2
 }

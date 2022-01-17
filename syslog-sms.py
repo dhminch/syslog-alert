@@ -16,7 +16,6 @@ def main():
     __location__ = os.path.realpath(os.path.join(os.getcwd(), os.path.dirname(__file__)))
     config = Configuration(os.path.join(__location__, "config.json"))
     Debug.set_verbosity(config.logging_verbosity)
-    Debug.set_output_file(config.logging_file)
     dispatcher = AlarmDispatcher(config)
     logmonitor = LogMonitor(config, dispatcher)
     logmonitor.monitor()
