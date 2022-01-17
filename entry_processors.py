@@ -12,6 +12,8 @@ RE_SSH_LOGIN_MESSAGE_FIELDS = re.compile(r"Accepted (\S+) for (\S+) from ([0-9.]
 RE_PFSENSE_WEB_LOGIN_MESSAGE_FIELDS = re.compile(r".* Successful login for user '(\S+)' from: ([0-9.]+)")
 RE_ESXI_WEB_LOGIN = re.compile(r".*User (\S+)@([0-9.]+) logged in as (.*)")
 RE_TTY_LOGIN = re.compile(r"LOGIN ON (\S+) BY (\S+)")
+RE_OPENVPN_LOGIN = re.compile(r"user '(\S+)' authenticated")
+RE_OMV_WEB_LOGIN = re.compile(r"Authorized login from ([a-f0-9:.]+) \[username=(\S+), user-agent=([^\]]+)]")
 
 RE_IGNORE_ENTRIES = [
     re.compile(r"org.gnome.Terminal.desktop.*(watch_established|watch_fast|unwatch_fast)"),
@@ -170,3 +172,42 @@ def entry_processor_tty_login(entry):
     return Alarm(fields["host"], "{}: User {} logged into {} locally via {}".format(
                 fields["date"], fields["user"], fields["host"],
                 fields["tty"]))
+
+def entry_processor_openvpn_login(entry):
+    fields = get_entry_fields(entry)
+    if fields is None:
+        Debug.log("Unable to parse fields from entry: {}".format(entry))
+        return None
+
+    match = RE_OPENVPN_LOGIN.match(fields["message"])
+    if match is None:
+        return None
+
+    if fields["process"] != "openvpn":
+        return None
+
+    fields["user"] = match.group(1)
+
+    return Alarm(fields["host"], "{}: User {} logged into {} via OpenVPN".format(
+                fields["date"], fields["user"], fields["host"]))
+
+def entry_processor_omv_web_login(entry):
+    fields = get_entry_fields(entry)
+    if fields is None:
+        Debug.log("Unable to parse fields from entry: {}".format(entry))
+        return None
+
+    match = RE_OMV_WEB_LOGIN.match(fields["message"])
+    if match is None:
+        return None
+
+    if fields["process"] != "openmediavault-webgui":
+        return None
+
+    fields["source_ip"] = match.group(1)
+    fields["user"] = match.group(2)
+    fields["user_agent"] = match.group(3)
+
+    return Alarm(fields["host"], "{}: User {} logged into {} OMV web UI from {} via {}".format(
+                fields["date"], fields["user"], fields["host"],
+                fields["source_ip"], fields["user_agent"]))

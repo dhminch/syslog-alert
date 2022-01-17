@@ -71,10 +71,9 @@ sudo systemctl status syslog-sms
 - Logging into terminal with SSH
 - Logging into pfSense web GUI
 - Logging into ESXi web GUI
+- Logging into OMV web GUI
+- OpenVPN successful auth
 
 ## Log entries to be implemented
-
-- OpenVPN successful auth
 - Logging into Gnome3 GUI
 - Logging into Unifi web GUI
-- Logging into OMV web GUI
