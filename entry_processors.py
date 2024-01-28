@@ -14,6 +14,8 @@ RE_ESXI_WEB_LOGIN = re.compile(r".*User (\S+)@([0-9.]+) logged in as (.*)")
 RE_TTY_LOGIN = re.compile(r"LOGIN ON (\S+) BY (\S+)")
 RE_OPENVPN_LOGIN = re.compile(r"user '(\S+)' authenticated")
 RE_OMV_WEB_LOGIN = re.compile(r"Authorized login from ([a-fA-F0-9:.]+) \[username=(\S+), user-agent=([^\]]+)]")
+RE_IDRAC_ENTRY_FIELDS = re.compile(r"(.{15}) ([^:]+) (.*)")
+RE_IDRAC_LOGIN = re.compile(r"USR0030, Message: Successfully logged in using (\S+), from (\S+) and (\S+)")
 
 RE_IGNORE_ENTRIES = [
     re.compile(r"org.gnome.Terminal.desktop.*(watch_established|watch_fast|unwatch_fast)"),
@@ -36,6 +38,18 @@ def get_entry_fields(entry):
     fields["process"] = match.group(3)
     fields["pid"] = match.group(4)
     fields["message"] = match.group(5).strip()
+    return fields
+    
+# iDRAC uses an entirely different format than standard syslog
+def get_idrac_entry_fields(entry):
+    match = RE_IDRAC_ENTRY_FIELDS.match(entry)
+    if match is None:
+        return None
+    
+    fields = {}
+    fields["date"] = match.group(1)
+    fields["host"] = match.group(2)
+    fields["message"] = match.group(3).strip()
     return fields
 
 def ignore_entry(entry):
@@ -211,3 +225,22 @@ def entry_processor_omv_web_login(entry):
     return Alarm(fields["host"], "{}: User {} logged into {} OMV web UI from {} via {}".format(
                 fields["date"], fields["user"], fields["host"],
                 fields["source_ip"], fields["user_agent"]))
+
+def entry_processor_idrac_login(entry):
+    fields = get_idrac_entry_fields(entry)
+    if fields is None:
+        Debug.log("Unable to parse fields from custom iDRAC entry: {}".format(entry))
+        return None
+
+    match = RE_IDRAC_LOGIN.match(fields["message"])
+    if match is None:
+        return None
+
+    fields["user"] = match.group(1)
+    fields["source_ip"] = match.group(2)
+    fields["method"] = match.group(3)
+
+    return Alarm(fields["host"], "{}: User {} logged into iDRAC {} from {} via {}".format(
+                fields["date"], fields["user"], fields["host"],
+                fields["source_ip"], fields["method"]))
+                
