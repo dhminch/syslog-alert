@@ -14,7 +14,8 @@ ENTRY_PROCESSORS = [
     entry_processors.entry_processor_esxi_web_login,
     entry_processors.entry_processor_tty_login,
     entry_processors.entry_processor_openvpn_login,
-    entry_processors.entry_processor_omv_web_login
+    entry_processors.entry_processor_omv_web_login,
+    entry_processors.entry_processor_idrac_login
 ]
 
 class LogMonitor:
