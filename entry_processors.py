@@ -15,7 +15,7 @@ RE_TTY_LOGIN = re.compile(r"LOGIN ON (\S+) BY (\S+)")
 RE_OPENVPN_LOGIN = re.compile(r"user '(\S+)' authenticated")
 RE_OMV_WEB_LOGIN = re.compile(r"Authorized login from ([a-fA-F0-9:.]+) \[username=(\S+), user-agent=([^\]]+)]")
 RE_IDRAC_ENTRY_FIELDS = re.compile(r"(.{15}) ([^:]+) (.*)")
-RE_IDRAC_LOGIN = re.compile(r"USR0030, Message: Successfully logged in using (\S+), from (\S+) and (\S+)")
+RE_IDRAC_LOGIN = re.compile(r".*USR0030, Message: Successfully logged in using (\S+), from (\S+) and (\S+)")
 
 RE_IGNORE_ENTRIES = [
     re.compile(r"org.gnome.Terminal.desktop.*(watch_established|watch_fast|unwatch_fast)"),
