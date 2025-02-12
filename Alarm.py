@@ -70,7 +70,7 @@ class AlarmDispatcher:
                 i = alarm.message.find("User")
                 if i > 0:
                     message = alarm.message[i:]
-                    if(len(list(filter(lambda a: current_time - a.time < 3600*2, 
+                    if(len(list(filter(lambda a: current_time - a.time_sent < 3600*2, 
                         self.alarm_sent + self.alarm_ignored))) > 0):
                         
                         alarm.status = AlarmStatus.IGNORED_OPENVPN
