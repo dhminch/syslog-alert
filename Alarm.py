@@ -7,10 +7,12 @@ from Debug import Debug
 
 class Alarm:
 
-    def __init__(self, host, message):
+    def __init__(self, host, message, source):
         self.host = host
         self.message = message
+        self.source = source
         self.status = AlarmStatus.UNSENT
+        self.time_created = time.time()
         self.time_sent = 0
 
     def __str__(self):
@@ -22,6 +24,7 @@ class AlarmStatus(Enum):
     IGNORED_HOST_COOLDOWN = 3
     IGNORED_HOUR_LIMIT = 4
     IGNORED_DAY_LIMIT = 5
+    IGNORED_OPENVPN = 6
 
 class AlarmDispatcher:
 
@@ -62,6 +65,18 @@ class AlarmDispatcher:
                 Debug.log("Ignoring alarm due to daily limit reached")
                 continue
 
+            # OpenVPN re-authenticates every hour for each user, ignore repeated messages for each user
+            if alarm.source == "OPENVPN":
+                i = alarm.message.find("User")
+                if i > 0:
+                    message = alarm.message[i:]
+                    if(len(list(filter(lambda a: current_time - a.time < 3600*2, 
+                        self.alarm_sent + self.alarm_ignored))) > 0):
+                        
+                        alarm.status = AlarmStatus.IGNORED_OPENVPN
+                        self.alarm_ignored.append(alarm)
+                        Debug.log("Ignoring alarm due to repeat OpenVPN messages")
+                        continue
             
             alarm.time_sent = current_time
             if self.config.twilio_disabled:

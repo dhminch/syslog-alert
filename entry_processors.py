@@ -81,7 +81,7 @@ def entry_processor_sudo(entry):
 
     return Alarm(fields["host"], "{}: User {} used sudo on {} to {} as {}".format(
                 fields["date"], fields["requesting_user"], fields["host"],
-                fields["command"], fields["target_user"]))
+                fields["command"], fields["target_user"]), "SUDO")
 
 def entry_processor_pkexec(entry):
     fields = get_entry_fields(entry)
@@ -104,7 +104,7 @@ def entry_processor_pkexec(entry):
 
     return Alarm(fields["host"], "{}: User {} used pkexec on {} to {} as {}".format(
                 fields["date"], fields["requesting_user"], fields["host"],
-                fields["command"], fields["target_user"]))
+                fields["command"], fields["target_user"]), "PKEXEC")
 
 def entry_processor_ssh_login(entry):
     fields = get_entry_fields(entry)
@@ -127,7 +127,7 @@ def entry_processor_ssh_login(entry):
 
     return Alarm(fields["host"], "{}: User {} logged into {} via SSH from {} using {}".format(
                 fields["date"], fields["user"], fields["host"],
-                fields["source_ip"], fields["auth_method"]))
+                fields["source_ip"], fields["auth_method"]), "SSH")
 
 def entry_processor_pfsense_web_login(entry):
     fields = get_entry_fields(entry)
@@ -147,7 +147,7 @@ def entry_processor_pfsense_web_login(entry):
 
     return Alarm(fields["host"], "{}: User {} logged into {} web GUI from {}".format(
                 fields["date"], fields["user"], fields["host"],
-                fields["source_ip"]))
+                fields["source_ip"]), "PFSENSEWEB")
 
 def entry_processor_esxi_web_login(entry):
     fields = get_entry_fields(entry)
@@ -168,7 +168,7 @@ def entry_processor_esxi_web_login(entry):
 
     return Alarm(fields["host"], "{}: User {} logged into {} ESXi web UI from {} via {}".format(
                 fields["date"], fields["user"], fields["host"],
-                fields["source_ip"], fields["user_agent"]))
+                fields["source_ip"], fields["user_agent"]), "ESXIWEB")
 
 def entry_processor_tty_login(entry):
     fields = get_entry_fields(entry)
@@ -185,7 +185,7 @@ def entry_processor_tty_login(entry):
 
     return Alarm(fields["host"], "{}: User {} logged into {} locally via {}".format(
                 fields["date"], fields["user"], fields["host"],
-                fields["tty"]))
+                fields["tty"]), "TTYLOGIN")
 
 def entry_processor_openvpn_login(entry):
     fields = get_entry_fields(entry)
@@ -203,7 +203,7 @@ def entry_processor_openvpn_login(entry):
     fields["user"] = match.group(1)
 
     return Alarm(fields["host"], "{}: User {} logged into {} via OpenVPN".format(
-                fields["date"], fields["user"], fields["host"]))
+                fields["date"], fields["user"], fields["host"]), "OPENVPN")
 
 def entry_processor_omv_web_login(entry):
     fields = get_entry_fields(entry)
@@ -224,7 +224,7 @@ def entry_processor_omv_web_login(entry):
 
     return Alarm(fields["host"], "{}: User {} logged into {} OMV web UI from {} via {}".format(
                 fields["date"], fields["user"], fields["host"],
-                fields["source_ip"], fields["user_agent"]))
+                fields["source_ip"], fields["user_agent"]), "OMVWEB")
 
 def entry_processor_idrac_login(entry):
     fields = get_idrac_entry_fields(entry)
@@ -242,5 +242,5 @@ def entry_processor_idrac_login(entry):
 
     return Alarm(fields["host"], "{}: User {} logged into iDRAC {} from {} via {}".format(
                 fields["date"], fields["user"], fields["host"],
-                fields["source_ip"], fields["method"]))
+                fields["source_ip"], fields["method"]), "IDRAC")
                 
