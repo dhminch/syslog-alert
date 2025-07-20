@@ -222,7 +222,7 @@ def entry_processor_wireguard_login(entry):
     fields["port"] = match.group(4)
 
     return Alarm(fields["host"], "{}: Peer {} logged into {} via Wireguard from {}".format(
-                fields["date"], fields["peer"], fields["host"], fields["ip"]))
+                fields["date"], fields["peer"], fields["host"], fields["ip"]), "WIREGUARD")
 
 def entry_processor_omv_web_login(entry):
     fields = get_entry_fields(entry)
