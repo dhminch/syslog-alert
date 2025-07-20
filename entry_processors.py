@@ -13,6 +13,7 @@ RE_PFSENSE_WEB_LOGIN_MESSAGE_FIELDS = re.compile(r".* Successful login for user 
 RE_ESXI_WEB_LOGIN = re.compile(r".*User (\S+)@([0-9.]+) logged in as (.*)")
 RE_TTY_LOGIN = re.compile(r"LOGIN ON (\S+) BY (\S+)")
 RE_OPENVPN_LOGIN = re.compile(r"user '(\S+)' authenticated")
+RE_WIREGUARD_LOGIN = re.compile(r"WireGuard: New connection - Interface: (\S+), Peer: (\S+), Endpoint: (\S+):(\S+)")
 RE_OMV_WEB_LOGIN = re.compile(r"Authorized login from ([a-fA-F0-9:.]+) \[username=(\S+), user-agent=([^\]]+)]")
 RE_IDRAC_ENTRY_FIELDS = re.compile(r"(.{15}) ([^:]+) (.*)")
 RE_IDRAC_LOGIN = re.compile(r".*USR0030, Message: Successfully logged in using (\S+), from (\S+) and (\S+)")
@@ -204,6 +205,24 @@ def entry_processor_openvpn_login(entry):
 
     return Alarm(fields["host"], "{}: User {} logged into {} via OpenVPN".format(
                 fields["date"], fields["user"], fields["host"]), "OPENVPN")
+                
+def entry_processor_wireguard_login(entry):
+    fields = get_entry_fields(entry)
+    if fields is None:
+        Debug.log("Unable to parse fields from entry: {}".format(entry))
+        return None
+
+    match = RE_WIREGUARD_LOGIN.match(fields["message"])
+    if match is None:
+        return None
+
+    fields["interface"] = match.group(1)
+    fields["peer"] = match.group(2)
+    fields["ip"] = match.group(3)
+    fields["port"] = match.group(4)
+
+    return Alarm(fields["host"], "{}: Peer {} logged into {} via Wireguard from {}".format(
+                fields["date"], fields["peer"], fields["host"], fields["ip"]))
 
 def entry_processor_omv_web_login(entry):
     fields = get_entry_fields(entry)
