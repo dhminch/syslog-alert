@@ -1,16 +1,14 @@
 {
     "logs":["/var/log/secure", "/var/log/messages"],
-    "cellphone": "+12223334444",
     "monitor_frequency": 60,
     "limits": {
         "host_cooldown": 3600,
         "max_per_hour": 10,
         "max_per_day": 25
     },
-    "twilio": {
-        "account_sid": "TWILIO_ACCOUNT_SID",
-        "auth_token": "TWILIO_AUTH_TOKEN",
-        "messagingservice_sid": "TWILIO_MESSAGING_SERVICE_SID",
+    "pushover": {
+        "app_token": "PUSHOVER_APP_TOKEN",
+        "target_token": "PUSHOVER_TARGET_TOKEN",
         "disabled": 0
     },
     "logging_verbosity": 2
