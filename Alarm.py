@@ -19,7 +19,10 @@ class Alarm:
         self.time_sent = 0
 
     def __str__(self):
-        return f"{self.title} - {self.message[0:80]}"
+        if len(self.message) > 80:
+            return f"{self.title} - {self.message[0:77]}..."
+        else:
+            return f"{self.title} - {message_output}"
 
 class AlarmStatus(Enum):
     UNSENT = 1
