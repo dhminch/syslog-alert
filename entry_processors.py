@@ -11,14 +11,14 @@ RE_MINIMAL_ENTRY_FIELDS = re.compile(r"(.{15}) ([^:]+) (.*)")
 RE_SUDO_MESSAGE_FIELDS = re.compile(r"(\S+) : TTY=(.*) ; PWD=(.*); USER=(.*) ; COMMAND=(.*)")
 RE_PKEXEC_MESSAGE_FIELDS = re.compile(r"(\S+): Executing command \[USER=(.*)\] \[TTY=(.*)\] \[CWD=(.*)\] \[COMMAND=(.*)\]")
 RE_SSH_LOGIN_MESSAGE_FIELDS = re.compile(r"Accepted (\S+) for (\S+) from ([0-9.]+) port ([0-9]{1,5}) (.+)")
-RE_PFSENSE_WEB_LOGIN_MESSAGE_FIELDS = re.compile(r".* Successful login for user '(\S+)' from: ([0-9.]+)")
-RE_ESXI_WEB_LOGIN = re.compile(r".*User (\S+)@([0-9.]+) logged in as (.*)")
+RE_PFSENSE_WEB_LOGIN_MESSAGE_FIELDS = re.compile(r"Successful login for user '(\S+)' from: ([0-9.]+)")
+RE_ESXI_WEB_LOGIN = re.compile(r"User (\S+)@([0-9.]+) logged in as (.*)")
 RE_TTY_LOGIN = re.compile(r"LOGIN ON (\S+) BY (\S+)")
 RE_OPENVPN_LOGIN = re.compile(r"user '(\S+)' authenticated")
 RE_WIREGUARD_LOGIN = re.compile(r"WireGuard: New connection - Interface: (\S+), Peer: (\S+), Endpoint: (\S+):(\S+)")
 RE_OMV_WEB_LOGIN = re.compile(r"Authorized login from ([a-fA-F0-9:.]+) \[username=(\S+), user-agent=([^\]]+)]")
 RE_UNIFI_WEB_LOGIN = re.compile(r"=(\S+) opened UniFi Network via the web. UNIFICategory=System UNIFIsubCategory=Admin Activity admin_ip=([0-9.]+)")
-RE_IDRAC_LOGIN = re.compile(r".*USR0030, Message: Successfully logged in using (\S+), from (\S+) and (\S+)")
+RE_IDRAC_LOGIN = re.compile(r"USR0030, Message: Successfully logged in using (\S+), from (\S+) and (\S+)")
 
 RE_IGNORE_ENTRIES = [
     re.compile(r"org.gnome.Terminal.desktop.*(watch_established|watch_fast|unwatch_fast)"),
@@ -73,7 +73,7 @@ def entry_processor_sudo(entry):
     if fields["process"] != "sudo":
         return None
 
-    match = RE_SUDO_MESSAGE_FIELDS.match(fields["message"])
+    match = RE_SUDO_MESSAGE_FIELDS.search(fields["message"])
     if match is None:
         return None
 
@@ -97,7 +97,7 @@ def entry_processor_pkexec(entry):
     if fields["process"] != "pkexec":
         return None
 
-    match = RE_PKEXEC_MESSAGE_FIELDS.match(fields["message"])
+    match = RE_PKEXEC_MESSAGE_FIELDS.search(fields["message"])
     if match is None:
         return None
 
@@ -121,7 +121,7 @@ def entry_processor_ssh_login(entry):
     if fields["process"] != "sshd":
         return None
 
-    match = RE_SSH_LOGIN_MESSAGE_FIELDS.match(fields["message"])
+    match = RE_SSH_LOGIN_MESSAGE_FIELDS.search(fields["message"])
     if match is None:
         return None
 
@@ -145,7 +145,7 @@ def entry_processor_pfsense_web_login(entry):
     if fields["process"] != "php-fpm":
         return None
 
-    match = RE_PFSENSE_WEB_LOGIN_MESSAGE_FIELDS.match(fields["message"])
+    match = RE_PFSENSE_WEB_LOGIN_MESSAGE_FIELDS.search(fields["message"])
     if match is None:
         return None
 
@@ -166,7 +166,7 @@ def entry_processor_esxi_web_login(entry):
     if fields["process"] != "Hostd":
         return None
 
-    match = RE_ESXI_WEB_LOGIN.match(fields["message"])
+    match = RE_ESXI_WEB_LOGIN.search(fields["message"])
     if match is None:
         return None
 
@@ -185,7 +185,7 @@ def entry_processor_tty_login(entry):
         Debug.log("Unable to parse fields from entry: {}".format(entry))
         return None
 
-    match = RE_TTY_LOGIN.match(fields["message"])
+    match = RE_TTY_LOGIN.search(fields["message"])
     if match is None:
         return None
 
@@ -203,7 +203,7 @@ def entry_processor_openvpn_login(entry):
         Debug.log("Unable to parse fields from entry: {}".format(entry))
         return None
 
-    match = RE_OPENVPN_LOGIN.match(fields["message"])
+    match = RE_OPENVPN_LOGIN.search(fields["message"])
     if match is None:
         return None
 
@@ -223,7 +223,7 @@ def entry_processor_wireguard_login(entry):
         Debug.log("Unable to parse fields from entry: {}".format(entry))
         return None
 
-    match = RE_WIREGUARD_LOGIN.match(fields["message"])
+    match = RE_WIREGUARD_LOGIN.search(fields["message"])
     if match is None:
         return None
 
@@ -243,7 +243,7 @@ def entry_processor_omv_web_login(entry):
         Debug.log("Unable to parse fields from entry: {}".format(entry))
         return None
 
-    match = RE_OMV_WEB_LOGIN.match(fields["message"])
+    match = RE_OMV_WEB_LOGIN.search(fields["message"])
     if match is None:
         return None
 
@@ -265,7 +265,7 @@ def entry_processor_unifi_web_login(entry):
         Debug.log("Unable to parse fields from entry: {}".format(entry))
         return None
 
-    match = RE_UNIFI_WEB_LOGIN.match(fields["message"])
+    match = RE_UNIFI_WEB_LOGIN.search(fields["message"])
     if match is None:
         return None
         
@@ -283,7 +283,7 @@ def entry_processor_idrac_login(entry):
         Debug.log("Unable to parse fields from custom iDRAC entry: {}".format(entry))
         return None
 
-    match = RE_IDRAC_LOGIN.match(fields["message"])
+    match = RE_IDRAC_LOGIN.search(fields["message"])
     if match is None:
         return None
 
