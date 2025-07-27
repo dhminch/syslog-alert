@@ -42,7 +42,7 @@ class AlarmDispatcher:
 
     def send_alarms(self):
         for alarm in self.alarm_queue:
-            Debug.log("Dispatching alarm: {}".format(alarm.replace('\n', ' ')))
+            Debug.log("Dispatching alarm: {}".format(str(alarm).replace('\n', ' ')))
 
             current_time = time.time()
 
