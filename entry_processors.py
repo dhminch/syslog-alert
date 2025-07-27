@@ -81,8 +81,8 @@ def entry_processor_sudo(entry):
     fields["command"] = match.group(5)
     
     return Alarm(host=fields['host'], 
-                title=f"sudo on {fields['host']}",
-                message=f"{fields['date']}\nUser: {fields['requesting_user']} used sudo\nHost: {fields['host']}\nCommand: {fields['command']}\nTarget User: {fields['target_user']}",
+                title=f"Privileges elevated on {fields['host']}",
+                message=f"{fields['date']}\nUser: {fields['requesting_user']} used sudo\nHost: {fields['host']}\nMethod: sudo\nCommand: {fields['command']}\nTarget User: {fields['target_user']}",
                 source='SUDO')
 
 def entry_processor_pkexec(entry):
@@ -105,9 +105,9 @@ def entry_processor_pkexec(entry):
     fields["command"] = match.group(5)
 
     return Alarm(host=fields['host'], 
-                title=f"pkexec on {fields['host']}",
-                message=f"{fields['date']}\nUser: {fields['requesting_user']} used pkexec\nHost: {fields['host']}\nCommand: {fields['command']}\nTarget User: {fields['target_user']}",
-                source='PKEXEC')
+                title=f"Privileges elevated on {fields['host']}",
+                message=f"{fields['date']}\nUser: {fields['requesting_user']}\nHost: {fields['host']}\nMethod: pkexec\nCommand: {fields['command']}\nTarget User: {fields['target_user']}",
+                source='SUDO')
 
 def entry_processor_ssh_login(entry):
     fields = get_entry_fields(entry)
@@ -129,7 +129,7 @@ def entry_processor_ssh_login(entry):
     fields["ssh_info"] = match.group(5)
                 
     return Alarm(host=fields['host'], 
-                title=f"Successfull SSH authentication to {fields['host']}",
+                title=f"Successful SSH login to {fields['host']}",
                 message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}\nSource IP: {fields['source_ip']}\nAuth Method: {fields['auth_method']}",
                 source='SSH')
 
@@ -149,9 +149,10 @@ def entry_processor_pfsense_web_login(entry):
     fields["user"] = match.group(1)
     fields["source_ip"] = match.group(2)
 
-    return Alarm(fields["host"], "{}: User {} logged into {} web GUI from {}".format(
-                fields["date"], fields["user"], fields["host"],
-                fields["source_ip"]), "PFSENSEWEB")
+    return Alarm(host=fields['host'], 
+                title=f"Successful web login to {fields['host']}",
+                message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}\nSource IP: {fields['source_ip']}",
+                source='PFSENSEWEB')
 
 def entry_processor_esxi_web_login(entry):
     fields = get_entry_fields(entry)
@@ -170,9 +171,10 @@ def entry_processor_esxi_web_login(entry):
     fields["source_ip"] = match.group(2)
     fields["user_agent"] = match.group(3)
 
-    return Alarm(fields["host"], "{}: User {} logged into {} ESXi web UI from {} via {}".format(
-                fields["date"], fields["user"], fields["host"],
-                fields["source_ip"], fields["user_agent"]), "ESXIWEB")
+    return Alarm(host=fields['host'], 
+                title=f"Successful web login to {fields['host']}",
+                message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}\nSource IP: {fields['source_ip']}\nUser Agent: {fields['user_agent]}",
+                source='ESXIWEB')
 
 def entry_processor_tty_login(entry):
     fields = get_entry_fields(entry)
@@ -187,9 +189,10 @@ def entry_processor_tty_login(entry):
     fields["tty"] = match.group(1)
     fields["user"] = match.group(2)
 
-    return Alarm(fields["host"], "{}: User {} logged into {} locally via {}".format(
-                fields["date"], fields["user"], fields["host"],
-                fields["tty"]), "TTYLOGIN")
+    return Alarm(host=fields['host'], 
+                title=f"Successful local authentication to {fields['host']}",
+                message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}\nTTY: {fields['tty']}",
+                source='TTYLOGIN')
 
 def entry_processor_openvpn_login(entry):
     fields = get_entry_fields(entry)
@@ -206,8 +209,10 @@ def entry_processor_openvpn_login(entry):
 
     fields["user"] = match.group(1)
 
-    return Alarm(fields["host"], "{}: User {} logged into {} via OpenVPN".format(
-                fields["date"], fields["user"], fields["host"]), "OPENVPN")
+    return Alarm(host=fields['host'], 
+                title=f"Successful VPN login to {fields['host']}",
+                message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}\nVPN: OpenVPN}",
+                source='OPENVPN')
                 
 def entry_processor_wireguard_login(entry):
     fields = get_entry_fields(entry)
@@ -224,8 +229,10 @@ def entry_processor_wireguard_login(entry):
     fields["ip"] = match.group(3)
     fields["port"] = match.group(4)
 
-    return Alarm(fields["host"], "{}: Peer {}... logged into {} via Wireguard from {}".format(
-                fields["date"], fields["peer"][:10], fields["host"], fields["ip"]), "WIREGUARD")
+    return Alarm(host=fields['host'], 
+                title=f"Successful VPN login to {fields['host']}",
+                message=f"{fields['date']}\nPeer: {fields['peer']}\nHost: {fields['host']}\nSource IP: {fields['ip']}\nVPN: Wireguard}",
+                source='WIREGUARD')
 
 def entry_processor_omv_web_login(entry):
     fields = get_entry_fields(entry)
@@ -244,10 +251,11 @@ def entry_processor_omv_web_login(entry):
     fields["user"] = match.group(2)
     fields["user_agent"] = match.group(3)
 
-    return Alarm(fields["host"], "{}: User {} logged into {} OMV web UI from {} via {}".format(
-                fields["date"], fields["user"], fields["host"],
-                fields["source_ip"], fields["user_agent"]), "OMVWEB")
-
+    return Alarm(host=fields['host'], 
+                title=f"Successful web login to {fields['host']}",
+                message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}\nSource IP: {fields['source_ip']}\nUser Agent: {fields['user_agent]}",
+                source='OMVWEB')
+                
 def entry_processor_idrac_login(entry):
     fields = get_idrac_entry_fields(entry)
     if fields is None:
@@ -262,7 +270,8 @@ def entry_processor_idrac_login(entry):
     fields["source_ip"] = match.group(2)
     fields["method"] = match.group(3)
 
-    return Alarm(fields["host"], "{}: User {} logged into iDRAC {} from {} via {}".format(
-                fields["date"], fields["user"], fields["host"],
-                fields["source_ip"], fields["method"]), "IDRAC")
+     return Alarm(host=fields['host'], 
+                title=f"Successful web login to {fields['host']}",
+                message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}\nSource IP: {fields['source_ip']}\nMethod: {fields['method']}",
+                source='IDRAC')
                 
