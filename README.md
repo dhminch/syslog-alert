@@ -69,9 +69,9 @@ sudo systemctl status syslog-sms
 - Logging into pfSense web GUI
 - Logging into ESXi web GUI
 - Logging into OMV web GUI
+- Logging into Unifi web GUI
 - OpenVPN successful auth
 - Wireguard successful auth
 
 ## Log entries to be implemented
 - Logging into Gnome3 GUI
-- Logging into Unifi web GUI
