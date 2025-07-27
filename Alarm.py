@@ -7,6 +7,7 @@ from Debug import Debug
 
 PUSHOVER_MESSAGES_ENDPOINT = 'https://api.pushover.net/1/messages.json'
 PUSHOVER_MESSAGES_TTL = 86400*7 # 1 week
+PUSHOVER_MESSAGES_PRIORITY = -1
 
 class Alarm:
 
@@ -96,7 +97,8 @@ class AlarmDispatcher:
                             'user': self.config.pushover_target_token,
                             'title': alarm.title,
                             'message': alarm.message,
-                            'ttl': PUSHOVER_MESSAGES_TTL
+                            'ttl': PUSHOVER_MESSAGES_TTL,
+                            'priority': PUSHOVER_MESSAGES_PRIORITY
                         })
                     response.raise_for_status()
                 except requests.exceptions.HTTPError as e:
