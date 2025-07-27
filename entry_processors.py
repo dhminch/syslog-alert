@@ -265,7 +265,7 @@ def entry_processor_unifi_web_login(entry):
         Debug.log("Unable to parse fields from entry: {}".format(entry))
         return None
 
-    match = RE_OMV_WEB_LOGIN.match(fields["message"])
+    match = RE_UNIFI_WEB_LOGIN.match(fields["message"])
     if match is None:
         return None
 
