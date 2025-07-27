@@ -211,7 +211,7 @@ def entry_processor_openvpn_login(entry):
 
     return Alarm(host=fields['host'], 
                 title=f"Successful VPN login to {fields['host']}",
-                message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}\nVPN: OpenVPN}",
+                message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}\nVPN: OpenVPN",
                 source='OPENVPN')
                 
 def entry_processor_wireguard_login(entry):
@@ -231,7 +231,7 @@ def entry_processor_wireguard_login(entry):
 
     return Alarm(host=fields['host'], 
                 title=f"Successful VPN login to {fields['host']}",
-                message=f"{fields['date']}\nPeer: {fields['peer']}\nHost: {fields['host']}\nSource IP: {fields['ip']}\nVPN: Wireguard}",
+                message=f"{fields['date']}\nPeer: {fields['peer']}\nHost: {fields['host']}\nSource IP: {fields['ip']}\nVPN: Wireguard",
                 source='WIREGUARD')
 
 def entry_processor_omv_web_login(entry):
