@@ -82,7 +82,7 @@ def entry_processor_sudo(entry):
     
     return Alarm(host=fields['host'], 
                 title=f"sudo on {fields['host']}",
-                message=f"{fields['date']}\nUser: {fields['requesting_user']} used sudo\nHost: {fields['host']}\nCommand: {fields['command']}\nTarget User: {fields['target_user']}'",
+                message=f"{fields['date']}\nUser: {fields['requesting_user']} used sudo\nHost: {fields['host']}\nCommand: {fields['command']}\nTarget User: {fields['target_user']}",
                 source='SUDO')
 
 def entry_processor_pkexec(entry):
@@ -104,9 +104,10 @@ def entry_processor_pkexec(entry):
     fields["pwd"] = match.group(4)
     fields["command"] = match.group(5)
 
-    return Alarm(fields["host"], "{}: User {} used pkexec on {} to {} as {}".format(
-                fields["date"], fields["requesting_user"], fields["host"],
-                fields["command"], fields["target_user"]), "PKEXEC")
+    return Alarm(host=fields['host'], 
+                title=f"pkexec on {fields['host']}",
+                message=f"{fields['date']}\nUser: {fields['requesting_user']} used pkexec\nHost: {fields['host']}\nCommand: {fields['command']}\nTarget User: {fields['target_user']}",
+                source='PKEXEC')
 
 def entry_processor_ssh_login(entry):
     fields = get_entry_fields(entry)
@@ -126,10 +127,11 @@ def entry_processor_ssh_login(entry):
     fields["source_ip"] = match.group(3)
     fields["source_port"] = match.group(4)
     fields["ssh_info"] = match.group(5)
-
-    return Alarm(fields["host"], "{}: User {} logged into {} via SSH from {} using {}".format(
-                fields["date"], fields["user"], fields["host"],
-                fields["source_ip"], fields["auth_method"]), "SSH")
+                
+    return Alarm(host=fields['host'], 
+                title=f"Successfull SSH authentication to {fields['host']}",
+                message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}\nSource IP: {fields['source_ip']}\nAuth Method: {fields['auth_method']}",
+                source='SSH')
 
 def entry_processor_pfsense_web_login(entry):
     fields = get_entry_fields(entry)
