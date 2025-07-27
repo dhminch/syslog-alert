@@ -173,7 +173,7 @@ def entry_processor_esxi_web_login(entry):
 
     return Alarm(host=fields['host'], 
                 title=f"Successful web login to {fields['host']}",
-                message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}\nSource IP: {fields['source_ip']}\nUser Agent: {fields['user_agent]}",
+                message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}\nSource IP: {fields['source_ip']}\nUser Agent: {fields['user_agent']}",
                 source='ESXIWEB')
 
 def entry_processor_tty_login(entry):
@@ -253,7 +253,7 @@ def entry_processor_omv_web_login(entry):
 
     return Alarm(host=fields['host'], 
                 title=f"Successful web login to {fields['host']}",
-                message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}\nSource IP: {fields['source_ip']}\nUser Agent: {fields['user_agent]}",
+                message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}\nSource IP: {fields['source_ip']}\nUser Agent: {fields['user_agent']}",
                 source='OMVWEB')
                 
 def entry_processor_idrac_login(entry):
