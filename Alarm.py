@@ -23,7 +23,7 @@ class Alarm:
         if len(self.message) > 80:
             return f"{self.title} - {self.message[0:77]}..."
         else:
-            return f"{self.title} - {message_output}"
+            return f"{self.title} - {self.message}"
 
 class AlarmStatus(Enum):
     UNSENT = 1
