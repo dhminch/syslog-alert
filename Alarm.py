@@ -1,9 +1,11 @@
 
 from enum import Enum
 import time
-from twilio.rest import Client
+import requests
 
 from Debug import Debug
+
+PUSHOVER_MESSAGES_ENDPOINT = 'https://api.pushover.net/1/messages.json'
 
 class Alarm:
 
@@ -33,7 +35,6 @@ class AlarmDispatcher:
         self.alarm_sent = []
         self.alarm_ignored = []
         self.config = config
-        self.client = Client(config.twilio_account_sid, config.twilio_auth_token)
 
     def load_alarms(self, alarms):
         self.alarm_queue.extend(alarms)
@@ -79,17 +80,20 @@ class AlarmDispatcher:
                         continue
             
             alarm.time_sent = current_time
-            if self.config.twilio_disabled:
-                Debug.log("Alarm would be sent, but Twilio is disabled in the configuration")
+            if self.config.pushover_disabled:
+                Debug.log("Alarm would be sent, but Pushover is disabled in the configuration")
             else:
-                Debug.log("Sending alarm via Twilio")
-                message = self.client.messages.create(  
-                                        messaging_service_sid=self.config.twilio_messagingservice_sid, 
-                                        body=alarm.message,      
-                                        to=self.config.cellphone
-                                    )
-                if message.error_code is not None:
-                    Debug.error("Unable to send alarm via Twilio: {}".format(message.error_message))
+                Debug.log("Sending alarm via Pushover")
+                try:
+                    response = requests.post(PUSHOVER_MESSAGES_ENDPOINT, 
+                        data={
+                            'token': self.config.pushover_app_token,
+                            'user': self.config.pushover_target_token,
+                            'message': alarm.message
+                        })
+                    response.raise_for_status()
+                except requests.exceptions.HTTPError as e:
+                    Debug.error("Issue to sending alarm via Pushover: {}".format(e))
             self.alarm_sent.append(alarm)
         
         self.alarm_queue.clear()
