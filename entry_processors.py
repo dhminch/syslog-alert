@@ -270,7 +270,7 @@ def entry_processor_idrac_login(entry):
     fields["source_ip"] = match.group(2)
     fields["method"] = match.group(3)
 
-     return Alarm(host=fields['host'], 
+    return Alarm(host=fields['host'], 
                 title=f"Successful web login to {fields['host']}",
                 message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}\nSource IP: {fields['source_ip']}\nMethod: {fields['method']}",
                 source='IDRAC')
