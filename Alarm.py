@@ -19,7 +19,7 @@ class Alarm:
         self.time_sent = 0
 
     def __str__(self):
-        return self.message[0:160]
+        return f"{self.title} - {self.message[0:80]}"
 
 class AlarmStatus(Enum):
     UNSENT = 1
@@ -42,7 +42,7 @@ class AlarmDispatcher:
 
     def send_alarms(self):
         for alarm in self.alarm_queue:
-            Debug.log("Dispatching alarm: {}".format(alarm))
+            Debug.log("Dispatching alarm: {}".format(alarm.replace('\n', ' '))
 
             current_time = time.time()
 
