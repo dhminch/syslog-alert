@@ -6,6 +6,8 @@ from Alarm import Alarm
 from Debug import Debug
 
 RE_ENTRY_FIELDS = re.compile(r"(.{15}) ([^:]+) ([^\s:]+?)(?:\[(\d+)\])?: (.*)")
+RE_MINIMAL_ENTRY_FIELDS = re.compile(r"(.{15}) ([^:]+) (.*)")
+
 RE_SUDO_MESSAGE_FIELDS = re.compile(r"(\S+) : TTY=(.*) ; PWD=(.*); USER=(.*) ; COMMAND=(.*)")
 RE_PKEXEC_MESSAGE_FIELDS = re.compile(r"(\S+): Executing command \[USER=(.*)\] \[TTY=(.*)\] \[CWD=(.*)\] \[COMMAND=(.*)\]")
 RE_SSH_LOGIN_MESSAGE_FIELDS = re.compile(r"Accepted (\S+) for (\S+) from ([0-9.]+) port ([0-9]{1,5}) (.+)")
@@ -15,7 +17,7 @@ RE_TTY_LOGIN = re.compile(r"LOGIN ON (\S+) BY (\S+)")
 RE_OPENVPN_LOGIN = re.compile(r"user '(\S+)' authenticated")
 RE_WIREGUARD_LOGIN = re.compile(r"WireGuard: New connection - Interface: (\S+), Peer: (\S+), Endpoint: (\S+):(\S+)")
 RE_OMV_WEB_LOGIN = re.compile(r"Authorized login from ([a-fA-F0-9:.]+) \[username=(\S+), user-agent=([^\]]+)]")
-RE_IDRAC_ENTRY_FIELDS = re.compile(r"(.{15}) ([^:]+) (.*)")
+RE_UNIFI_WEB_LOGIN = re.compile(r"(\S+) opened UniFi Network via the web. UNIFICategory=System UNIFIsubCategory=Admin Activity admin_ip=([0-9.]+)")
 RE_IDRAC_LOGIN = re.compile(r".*USR0030, Message: Successfully logged in using (\S+), from (\S+) and (\S+)")
 
 RE_IGNORE_ENTRIES = [
@@ -42,8 +44,9 @@ def get_entry_fields(entry):
     return fields
     
 # iDRAC uses an entirely different format than standard syslog
-def get_idrac_entry_fields(entry):
-    match = RE_IDRAC_ENTRY_FIELDS.match(entry)
+# also happens that Unifi web logs work with this too
+def get_minimal_entry_fields(entry):
+    match = RE_MINIMAL_ENTRY_FIELDS.match(entry)
     if match is None:
         return None
     
@@ -255,9 +258,30 @@ def entry_processor_omv_web_login(entry):
                 title=f"Successful web login to {fields['host']}",
                 message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}\nSource IP: {fields['source_ip']}\nUser Agent: {fields['user_agent']}",
                 source='OMVWEB')
+
+def entry_processor_unifi_web_login(entry):
+    fields = get_minimal_entry_fields(entry)
+    if fields is None:
+        Debug.log("Unable to parse fields from entry: {}".format(entry))
+        return None
+
+    match = RE_OMV_WEB_LOGIN.match(fields["message"])
+    if match is None:
+        return None
+
+    if fields["process"] != "openmediavault-webgui":
+        return None
+        
+    fields["user"] = match.group(1)
+    fields["source_ip"] = match.group(2)
+
+    return Alarm(host=fields['host'], 
+                title=f"Successful web login to {fields['host']}",
+                message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}\nSource IP: {fields['source_ip']}",
+                source='UNIFIWEB')
                 
 def entry_processor_idrac_login(entry):
-    fields = get_idrac_entry_fields(entry)
+    fields = get_minimal_entry_fields(entry)
     if fields is None:
         Debug.log("Unable to parse fields from custom iDRAC entry: {}".format(entry))
         return None
