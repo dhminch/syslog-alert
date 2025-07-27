@@ -79,10 +79,11 @@ def entry_processor_sudo(entry):
     fields["pwd"] = match.group(3)
     fields["target_user"] = match.group(4)
     fields["command"] = match.group(5)
-
-    return Alarm(fields["host"], "{}: User {} used sudo on {} to {} as {}".format(
-                fields["date"], fields["requesting_user"], fields["host"],
-                fields["command"], fields["target_user"]), "SUDO")
+    
+    return Alarm(host=fields['host'], 
+                title=f"sudo on {fields['host']}",
+                message=f"{fields['date']}\nUser: {fields['requesting_user']} used sudo\nHost: {fields['host']}\nCommand: {fields['command']}\nTarget User: {fields['target_user']}'"
+                source='SUDO')
 
 def entry_processor_pkexec(entry):
     fields = get_entry_fields(entry)

@@ -9,8 +9,9 @@ PUSHOVER_MESSAGES_ENDPOINT = 'https://api.pushover.net/1/messages.json'
 
 class Alarm:
 
-    def __init__(self, host, message, source):
+    def __init__(self, host, title, message, source):
         self.host = host
+        self.title = title
         self.message = message
         self.source = source
         self.status = AlarmStatus.UNSENT
@@ -89,6 +90,7 @@ class AlarmDispatcher:
                         data={
                             'token': self.config.pushover_app_token,
                             'user': self.config.pushover_target_token,
+                            'title': alarm.title,
                             'message': alarm.message
                         })
                     response.raise_for_status()
