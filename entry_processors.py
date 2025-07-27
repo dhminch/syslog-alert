@@ -82,7 +82,7 @@ def entry_processor_sudo(entry):
     
     return Alarm(host=fields['host'], 
                 title=f"Privileges elevated on {fields['host']}",
-                message=f"{fields['date']}\nUser: {fields['requesting_user']} used sudo\nHost: {fields['host']}\nMethod: sudo\nCommand: {fields['command']}\nTarget User: {fields['target_user']}",
+                message=f"{fields['date']}\nUser: {fields['requesting_user']}\nHost: {fields['host']}\nMethod: sudo\nCommand: {fields['command']}\nTarget User: {fields['target_user']}",
                 source='SUDO')
 
 def entry_processor_pkexec(entry):
