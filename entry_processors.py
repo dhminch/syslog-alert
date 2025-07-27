@@ -268,9 +268,6 @@ def entry_processor_unifi_web_login(entry):
     match = RE_UNIFI_WEB_LOGIN.match(fields["message"])
     if match is None:
         return None
-
-    if fields["process"] != "openmediavault-webgui":
-        return None
         
     fields["user"] = match.group(1)
     fields["source_ip"] = match.group(2)
