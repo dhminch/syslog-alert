@@ -83,6 +83,8 @@ def entry_processor_sudo(entry):
     fields["target_user"] = match.group(4)
     fields["command"] = match.group(5)
     
+    Debug.debug(entry)
+    
     return Alarm(host=fields['host'], 
                 title=f"Privileges elevated on {fields['host']}",
                 message=f"{fields['date']}\nUser: {fields['requesting_user']}\nHost: {fields['host']}\nMethod: sudo\nCommand: {fields['command']}\nTarget User: {fields['target_user']}",
