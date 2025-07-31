@@ -110,7 +110,7 @@ def entry_processor_pkexec(entry):
     return Alarm(host=fields['host'], 
                 title=f"Privileges elevated on {fields['host']}",
                 message=f"{fields['date']}\nUser: {fields['requesting_user']}\nHost: {fields['host']}\nMethod: pkexec\nCommand: {fields['command']}\nTarget User: {fields['target_user']}",
-                source='SUDO')
+                source='PKEXEC')
 
 def entry_processor_ssh_login(entry):
     fields = get_entry_fields(entry)
