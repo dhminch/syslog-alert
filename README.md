@@ -6,7 +6,7 @@ Monitor syslog and send a push notification when something interesting happens. 
 - python3
 - python3 requests
 - systemd
-- (Pushover)[https://pushover.net/]
+- [Pushover](https://pushover.net/)
 
 ## Installation
 
