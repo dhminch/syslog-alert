@@ -121,7 +121,7 @@ def entry_processor_ssh_login(entry):
         Debug.log("Unable to parse fields from entry: {}".format(entry))
         return None
 
-    if fields["process"] != "sshd":
+    if fields["process"] != "sshd" and fields["process"] != "sshd-session":
         return None
 
     match = RE_SSH_LOGIN_MESSAGE_FIELDS.search(fields["message"])
