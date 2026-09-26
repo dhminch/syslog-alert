@@ -319,3 +319,5 @@ def entry_processor_proxmox_web_login(entry):
                 message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}",
                 source='PROXMOXWEB')
 
+# Remember to add new entry processors to LogMonitor.py
+
