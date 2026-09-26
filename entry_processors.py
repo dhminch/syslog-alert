@@ -300,7 +300,7 @@ def entry_processor_idrac_login(entry):
                 source='IDRAC')
 
 def entry_processor_proxmox_web_login(entry):
-    fields = get_minimal_entry_fields(entry)
+    fields = get_entry_fields(entry)
     if fields is None:
         Debug.log("Unable to parse fields from entry: {}".format(entry))
         return None
