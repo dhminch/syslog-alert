@@ -19,6 +19,7 @@ RE_WIREGUARD_LOGIN = re.compile(r"WireGuard: New connection - Interface: (\S+), 
 RE_OMV_WEB_LOGIN = re.compile(r"Authorized login from ([a-fA-F0-9:.]+) \[username=(\S+), user-agent=([^\]]+)]")
 RE_UNIFI_WEB_LOGIN = re.compile(r"=(\S+) opened UniFi Network via the web. UNIFICategory=System UNIFIsubCategory=Admin Activity admin_ip=([0-9.]+)")
 RE_IDRAC_LOGIN = re.compile(r"USR0030, Message: Successfully logged in using (\S+), from (\S+) and (\S+)")
+RE_PROXMOX_WEB_LOGIN = re.compile(r"successful auth for user '(\S+)'")
 
 RE_IGNORE_ENTRIES = [
     re.compile(r"org.gnome.Terminal.desktop.*(watch_established|watch_fast|unwatch_fast)"),
@@ -297,4 +298,24 @@ def entry_processor_idrac_login(entry):
                 title=f"Successful web login to {fields['host']}",
                 message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}\nSource IP: {fields['source_ip']}\nMethod: {fields['method']}",
                 source='IDRAC')
-                
+
+def entry_processor_proxmox_web_login(entry):
+    fields = get_minimal_entry_fields(entry)
+    if fields is None:
+        Debug.log("Unable to parse fields from entry: {}".format(entry))
+        return None
+    
+    if fields["process"] != "pvedaemon":
+        return None
+
+    match = RE_PROXMOX_WEB_LOGIN.search(fields["message"])
+    if match is None:
+        return None
+        
+    fields["user"] = match.group(1)
+
+    return Alarm(host=fields['host'], 
+                title=f"Successful web login to {fields['host']}",
+                message=f"{fields['date']}\nUser: {fields['user']}\nHost: {fields['host']}",
+                source='PROXMOXWEB')
+
